@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Ganhos</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            color: #222;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #2196f3;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1976d2;
+        }
+
+        .resumo {
+            margin-top: 25px;
+            padding: 15px;
+            background: #eee;
+            border-radius: 10px;
+        }
+
+        .dia {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #fafafa;
+            border-left: 5px solid #2196f3;
+        }
+
+        .dia h3 {
+            margin-top: 0;
+        }
+
+        .ganho {
+            color: green;
+        }
+
+        .despesa {
+            color: red;
+        }
+
+        .liquido {
+            color: #1976d2;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .totais {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>💰 Calculadora de Ganhos</h1>
+
+    <label for="data">Data:</label>
+    <input type="date" id="data">
+
+    <label for="ganhos">Ganhos (R$):</label>
+    <input type="number" id="ganhos" placeholder="Ex: 3900" step="0.01">
+
+    <label for="despesas">Despesas (R$):</label>
+    <input type="number" id="despesas" placeholder="Ex: 100" step="0.01">
+
+    <button onclick="adicionarDia()">Adicionar dia</button>
+
+    <div class="totais">
+        <h2>Resumo geral</h2>
+        <p>Total de ganhos: <strong id="totalGanhos">R$ 0,00</strong></p>
+        <p>Total de despesas: <strong id="totalDespesas">R$ 0,00</strong></p>
+        <p class="liquido">
+            Total líquido: <span id="totalLiquido">R$ 0,00</span>
+        </p>
+    </div>
+
+    <div id="historico"></div>
+
+</div>
+
+<script>
+
+    let dias = [];
+
+    function formatarMoeda(valor) {
+        return valor.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+    }
+
+    function adicionarDia() {
+
+        const data = document.getElementById("data").value;
+        const ganhos = parseFloat(document.getElementById("ganhos").value) || 0;
+        const despesas = parseFloat(document.getElementById("despesas").value) || 0;
+
+        if (!data) {
+            alert("Escolha uma data.");
+            return;
+        }
+
+        if (ganhos === 0 && despesas === 0) {
+            alert("Digite algum valor de ganho ou despesa.");
+            return;
+        }
+
+        const liquido = ganhos - despesas;
+
+        dias.push({
+            data: data,
+            ganhos: ganhos,
+            despesas: despesas,
+            liquido: liquido
+        });
+
+        atualizarTela();
+
+        // Limpar os campos
+        document.getElementById("data").value = "";
+        document.getElementById("ganhos").value = "";
+        document.getElementById("despesas").value = "";
+    }
+
+    function atualizarTela() {
+
+        const historico = document.getElementById("historico");
+
+        historico.innerHTML = "";
+
+        let totalGanhos = 0;
+        let totalDespesas = 0;
+        let totalLiquido = 0;
+
+        dias.forEach((dia, index) => {
+
+            totalGanhos += dia.ganhos;
+            totalDespesas += dia.despesas;
+            totalLiquido += dia.liquido;
+
+            const dataFormatada = new Date(
+                dia.data + "T00:00:00"
+            ).toLocaleDateString('pt-BR');
+
+            historico.innerHTML += `
+                <div class="dia">
+
+                    <h3>📅 Dia ${dataFormatada}</h3>
+
+                    <p class="ganho">
+                        💵 Ganhos: <strong>
+                        ${formatarMoeda(dia.ganhos)}
+                        </strong>
+                    </p>
+
+                    <p class="despesa">
+                        💸 Despesas: <strong>
+                        ${formatarMoeda(dia.despesas)}
+                        </strong>
+                    </p>
+
+                    <p class="liquido">
+                        💰 Total líquido:
+                        ${formatarMoeda(dia.liquido)}
+                    </p>
+
+                </div>
+            `;
+        });
+
+        document.getElementById("totalGanhos").textContent =
+            formatarMoeda(totalGanhos);
+
+        document.getElementById("totalDespesas").textContent =
+            formatarMoeda(totalDespesas);
+
+        document.getElementById("totalLiquido").textContent =
+            formatarMoeda(totalLiquido);
+    }
+
+</script>
+
+</body>
+</html>

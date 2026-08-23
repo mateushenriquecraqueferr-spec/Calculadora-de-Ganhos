@@ -1,0 +1,245 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f4f8;
+    color: #222;
+}
+
+.app {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* CABEÇALHO */
+
+header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+header h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #666;
+    font-size: 15px;
+}
+
+/* RESUMO */
+
+.resumo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.card {
+    padding: 15px 10px;
+    border-radius: 12px;
+    background: white;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.card span {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.card strong {
+    display: block;
+    font-size: 16px;
+}
+
+.ganho-card {
+    border-top: 4px solid #16a34a;
+}
+
+.ganho-card strong {
+    color: #16a34a;
+}
+
+.despesa-card {
+    border-top: 4px solid #dc2626;
+}
+
+.despesa-card strong {
+    color: #dc2626;
+}
+
+.liquido-card {
+    border-top: 4px solid #2563eb;
+}
+
+.liquido-card strong {
+    color: #2563eb;
+}
+
+/* FORMULÁRIO */
+
+.formulario {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+.formulario h2,
+.historico h2 {
+    margin-bottom: 18px;
+    font-size: 21px;
+}
+
+label {
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 9px;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #2563eb;
+}
+
+button {
+    width: 100%;
+    border: none;
+    padding: 14px;
+    margin-top: 20px;
+    border-radius: 9px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+/* HISTÓRICO */
+
+.historico {
+    margin-bottom: 30px;
+}
+
+.dia {
+    background: white;
+    padding: 18px;
+    margin-bottom: 12px;
+    border-radius: 13px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+}
+
+.dia-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.dia-header h3 {
+    font-size: 17px;
+}
+
+.dia-info p {
+    margin: 8px 0;
+    font-size: 15px;
+}
+
+.ganho {
+    color: #16a34a;
+}
+
+.despesa {
+    color: #dc2626;
+}
+
+.liquido {
+    color: #2563eb;
+    font-weight: bold;
+    font-size: 17px !important;
+}
+
+.acoes {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.btn-editar,
+.btn-excluir {
+    margin: 0;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.btn-editar {
+    background: #f59e0b;
+}
+
+.btn-editar:hover {
+    background: #d97706;
+}
+
+.btn-excluir {
+    background: #dc2626;
+}
+
+.btn-excluir:hover {
+    background: #b91c1c;
+}
+
+/* MENSAGEM VAZIA */
+
+.vazio {
+    text-align: center;
+    padding: 30px 15px;
+    background: white;
+    border-radius: 13px;
+    color: #777;
+}
+
+/* CELULAR */
+
+@media (max-width: 480px) {
+
+    .app {
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+
+    .resumo {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 14px;
+    }
+
+}
