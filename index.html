@@ -1,242 +1,945 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#1976d2"
+    >
+
     <title>Calculadora de Ganhos</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
-        body {
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            color: #222;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        button {
-            width: 100%;
-            margin-top: 20px;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            background: #2196f3;
-            color: white;
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #1976d2;
-        }
-
-        .resumo {
-            margin-top: 25px;
-            padding: 15px;
-            background: #eee;
-            border-radius: 10px;
-        }
-
-        .dia {
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 10px;
-            background: #fafafa;
-            border-left: 5px solid #2196f3;
-        }
-
-        .dia h3 {
-            margin-top: 0;
-        }
-
-        .ganho {
-            color: green;
-        }
-
-        .despesa {
-            color: red;
-        }
-
-        .liquido {
-            color: #1976d2;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .totais {
-            margin-top: 20px;
-            padding: 15px;
-            background: #e3f2fd;
-            border-radius: 10px;
-        }
-    </style>
 </head>
+
 
 <body>
 
-<div class="container">
 
-    <h1>💰 Calculadora de Ganhos</h1>
+<!-- =====================================================
+     TELA DE LOGIN
+===================================================== -->
 
-    <label for="data">Data:</label>
-    <input type="date" id="data">
+<div
+    id="telaLogin"
+    class="tela-login"
+>
 
-    <label for="ganhos">Ganhos (R$):</label>
-    <input type="number" id="ganhos" placeholder="Ex: 3900" step="0.01">
+    <div class="login-container">
 
-    <label for="despesas">Despesas (R$):</label>
-    <input type="number" id="despesas" placeholder="Ex: 100" step="0.01">
+        <div class="login-logo">
+            💰
+        </div>
 
-    <button onclick="adicionarDia()">Adicionar dia</button>
+        <h1>
+            Calculadora de Ganhos
+        </h1>
 
-    <div class="totais">
-        <h2>Resumo geral</h2>
-        <p>Total de ganhos: <strong id="totalGanhos">R$ 0,00</strong></p>
-        <p>Total de despesas: <strong id="totalDespesas">R$ 0,00</strong></p>
-        <p class="liquido">
-            Total líquido: <span id="totalLiquido">R$ 0,00</span>
+        <p class="login-subtitulo">
+            Entre na sua conta
         </p>
-    </div>
 
-    <div id="historico"></div>
+
+        <!-- LOGIN -->
+
+        <div id="areaLogin">
+
+            <input
+                type="email"
+                id="emailLogin"
+                placeholder="Seu e-mail"
+                autocomplete="email"
+            >
+
+            <input
+                type="password"
+                id="senhaLogin"
+                placeholder="Sua senha"
+                autocomplete="current-password"
+            >
+
+
+            <button
+                id="btnLogin"
+                class="btn-login"
+            >
+                🔐 Entrar
+            </button>
+
+
+            <button
+                id="btnMostrarCadastro"
+                class="btn-secundario"
+            >
+                📝 Criar conta
+            </button>
+
+        </div>
+
+
+        <!-- CADASTRO -->
+
+        <div
+            id="areaCadastro"
+            style="display:none;"
+        >
+
+            <h2>
+                Criar sua conta
+            </h2>
+
+
+            <input
+                type="email"
+                id="emailCadastro"
+                placeholder="Seu e-mail"
+                autocomplete="email"
+            >
+
+
+            <input
+                type="password"
+                id="senhaCadastro"
+                placeholder="Crie uma senha"
+                autocomplete="new-password"
+            >
+
+
+            <input
+                type="password"
+                id="senhaCadastroConfirmar"
+                placeholder="Confirme sua senha"
+                autocomplete="new-password"
+            >
+
+
+            <button
+                id="btnCadastro"
+                class="btn-login"
+            >
+                ✅ Criar conta
+            </button>
+
+
+            <button
+                id="btnMostrarLogin"
+                class="btn-secundario"
+            >
+                ↩️ Voltar para login
+            </button>
+
+        </div>
+
+
+        <!-- MENSAGEM LOGIN -->
+
+        <div
+            id="mensagemLogin"
+            class="mensagem-login"
+        ></div>
+
+
+    </div>
 
 </div>
 
-<script>
 
-    let dias = [];
 
-    function formatarMoeda(valor) {
-        return valor.toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-        });
+<!-- =====================================================
+     APLICATIVO
+===================================================== -->
+
+<div
+    id="app"
+    style="display:none;"
+>
+
+
+    <!-- =================================================
+         CABEÇALHO
+    ================================================== -->
+
+    <header class="cabecalho">
+
+        <h1>
+            💰 Calculadora de Ganhos
+        </h1>
+
+
+        <div
+            id="usuarioLogado"
+            class="usuario-logado"
+        >
+            👤 Carregando...
+        </div>
+
+
+        <button
+            id="btnSair"
+            class="btn-sair"
+        >
+            🚪 Sair da conta
+        </button>
+
+    </header>
+
+
+
+    <!-- =================================================
+         CONTEÚDO
+    ================================================== -->
+
+    <main class="container">
+
+
+        <!-- =================================================
+             FORMULÁRIO
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>
+                📅 Adicionar ganhos
+            </h2>
+
+
+            <label for="data">
+                Data:
+            </label>
+
+
+            <input
+                type="date"
+                id="data"
+            >
+
+
+            <label for="ganhos">
+                Ganhos (R$):
+            </label>
+
+
+            <input
+                type="number"
+                id="ganhos"
+                placeholder="Digite seus ganhos"
+                step="0.01"
+                min="0"
+            >
+
+
+            <label for="despesas">
+                Despesas (R$):
+            </label>
+
+
+            <input
+                type="number"
+                id="despesas"
+                placeholder="Digite suas despesas"
+                step="0.01"
+                min="0"
+            >
+
+
+            <button
+                id="btnAdicionar"
+                class="btn-adicionar"
+            >
+                ➕ Adicionar dia
+            </button>
+
+
+            <!-- STATUS -->
+
+            <div
+                id="status"
+                class="mensagem"
+            ></div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             RESUMO
+        ================================================== -->
+
+        <section class="resumo">
+
+            <h2>
+                📊 Resumo geral
+            </h2>
+
+
+            <div class="resumo-item">
+
+                <span>
+                    Total de ganhos:
+                </span>
+
+                <strong id="totalGanhos">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div class="resumo-item">
+
+                <span>
+                    Total de despesas:
+                </span>
+
+                <strong id="totalDespesas">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+            <div class="resumo-item liquido">
+
+                <span>
+                    💰 Total líquido:
+                </span>
+
+                <strong id="totalLiquido">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             HISTÓRICO
+        ================================================== -->
+
+        <section class="card">
+
+            <h2>
+                📋 Histórico
+            </h2>
+
+
+            <div
+                id="historico"
+                class="historico"
+            >
+
+                <p style="text-align:center;">
+                    Nenhum registro encontrado.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     FIREBASE AUTHENTICATION
+===================================================== -->
+
+<script type="module">
+
+    import {
+        initializeApp
     }
+    from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 
-    function adicionarDia() {
 
-        const data = document.getElementById("data").value;
-        const ganhos = parseFloat(document.getElementById("ganhos").value) || 0;
-        const despesas = parseFloat(document.getElementById("despesas").value) || 0;
+    import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        onAuthStateChanged
+    }
+    from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
-        if (!data) {
-            alert("Escolha uma data.");
-            return;
+
+    // =================================================
+    // CONFIGURAÇÃO FIREBASE
+    // =================================================
+
+    const firebaseConfig = {
+
+        apiKey:
+            "AIzaSyBuTmt3xy76LzxkPRWoSEy1UI0bJCbuo",
+
+        authDomain:
+            "calculadora-de-ganhos-3ed2a.firebaseapp.com",
+
+        projectId:
+            "calculadora-de-ganhos-3ed2a",
+
+        storageBucket:
+            "calculadora-de-ganhos-3ed2a.firebasestorage.app",
+
+        messagingSenderId:
+            "645843187386",
+
+        appId:
+            "1:645843187386:web:06928c88dbeeed0f48b483"
+
+    };
+
+
+    // =================================================
+    // APP DE AUTENTICAÇÃO
+    // =================================================
+
+    const loginApp =
+        initializeApp(
+            firebaseConfig,
+            "LoginApp"
+        );
+
+
+    const loginAuth =
+        getAuth(
+            loginApp
+        );
+
+
+
+    // =================================================
+    // ELEMENTOS
+    // =================================================
+
+    const telaLogin =
+        document.getElementById(
+            "telaLogin"
+        );
+
+
+    const app =
+        document.getElementById(
+            "app"
+        );
+
+
+    const areaLogin =
+        document.getElementById(
+            "areaLogin"
+        );
+
+
+    const areaCadastro =
+        document.getElementById(
+            "areaCadastro"
+        );
+
+
+    const btnLogin =
+        document.getElementById(
+            "btnLogin"
+        );
+
+
+    const btnCadastro =
+        document.getElementById(
+            "btnCadastro"
+        );
+
+
+    const btnMostrarCadastro =
+        document.getElementById(
+            "btnMostrarCadastro"
+        );
+
+
+    const btnMostrarLogin =
+        document.getElementById(
+            "btnMostrarLogin"
+        );
+
+
+    const mensagemLogin =
+        document.getElementById(
+            "mensagemLogin"
+        );
+
+
+    const usuarioLogado =
+        document.getElementById(
+            "usuarioLogado"
+        );
+
+
+
+    // =================================================
+    // MENSAGEM
+    // =================================================
+
+    function mostrarMensagem(
+        texto,
+        erro = true
+    ) {
+
+        mensagemLogin.textContent =
+            texto;
+
+
+        if (erro) {
+
+            mensagemLogin.style.color =
+                "#d32f2f";
+
         }
 
-        if (ganhos === 0 && despesas === 0) {
-            alert("Digite algum valor de ganho ou despesa.");
-            return;
+        else {
+
+            mensagemLogin.style.color =
+                "#2e7d32";
+
         }
 
-        const liquido = ganhos - despesas;
-
-        dias.push({
-            data: data,
-            ganhos: ganhos,
-            despesas: despesas,
-            liquido: liquido
-        });
-
-        atualizarTela();
-
-        // Limpar os campos
-        document.getElementById("data").value = "";
-        document.getElementById("ganhos").value = "";
-        document.getElementById("despesas").value = "";
     }
 
-    function atualizarTela() {
 
-        const historico = document.getElementById("historico");
 
-        historico.innerHTML = "";
+    // =================================================
+    // MOSTRAR CADASTRO
+    // =================================================
 
-        let totalGanhos = 0;
-        let totalDespesas = 0;
-        let totalLiquido = 0;
+    btnMostrarCadastro.addEventListener(
+        "click",
+        () => {
 
-        dias.forEach((dia, index) => {
+            areaLogin.style.display =
+                "none";
 
-            totalGanhos += dia.ganhos;
-            totalDespesas += dia.despesas;
-            totalLiquido += dia.liquido;
 
-            const dataFormatada = new Date(
-                dia.data + "T00:00:00"
-            ).toLocaleDateString('pt-BR');
+            areaCadastro.style.display =
+                "block";
 
-            historico.innerHTML += `
-                <div class="dia">
 
-                    <h3>📅 Dia ${dataFormatada}</h3>
+            mensagemLogin.textContent =
+                "";
 
-                    <p class="ganho">
-                        💵 Ganhos: <strong>
-                        ${formatarMoeda(dia.ganhos)}
-                        </strong>
-                    </p>
+        }
+    );
 
-                    <p class="despesa">
-                        💸 Despesas: <strong>
-                        ${formatarMoeda(dia.despesas)}
-                        </strong>
-                    </p>
 
-                    <p class="liquido">
-                        💰 Total líquido:
-                        ${formatarMoeda(dia.liquido)}
-                    </p>
 
-                </div>
-            `;
-        });
+    // =================================================
+    // MOSTRAR LOGIN
+    // =================================================
 
-        document.getElementById("totalGanhos").textContent =
-            formatarMoeda(totalGanhos);
+    btnMostrarLogin.addEventListener(
+        "click",
+        () => {
 
-        document.getElementById("totalDespesas").textContent =
-            formatarMoeda(totalDespesas);
+            areaCadastro.style.display =
+                "none";
 
-        document.getElementById("totalLiquido").textContent =
-            formatarMoeda(totalLiquido);
-    }
+
+            areaLogin.style.display =
+                "block";
+
+
+            mensagemLogin.textContent =
+                "";
+
+        }
+    );
+
+
+
+    // =================================================
+    // LOGIN
+    // =================================================
+
+    btnLogin.addEventListener(
+        "click",
+        async () => {
+
+            const email =
+                document.getElementById(
+                    "emailLogin"
+                ).value.trim();
+
+
+            const senha =
+                document.getElementById(
+                    "senhaLogin"
+                ).value;
+
+
+            if (!email || !senha) {
+
+                mostrarMensagem(
+                    "Digite seu e-mail e sua senha."
+                );
+
+                return;
+            }
+
+
+            btnLogin.disabled =
+                true;
+
+
+            btnLogin.textContent =
+                "Entrando...";
+
+
+            try {
+
+                await signInWithEmailAndPassword(
+                    loginAuth,
+                    email,
+                    senha
+                );
+
+
+                mostrarMensagem(
+                    "✅ Login realizado com sucesso!",
+                    false
+                );
+
+            }
+
+            catch (erro) {
+
+                console.error(
+                    erro
+                );
+
+
+                let mensagem =
+                    "❌ E-mail ou senha incorretos.";
+
+
+                if (
+                    erro.code ===
+                    "auth/invalid-credential"
+                ) {
+
+                    mensagem =
+                        "❌ E-mail ou senha incorretos.";
+
+                }
+
+
+                if (
+                    erro.code ===
+                    "auth/user-not-found"
+                ) {
+
+                    mensagem =
+                        "❌ Essa conta não existe.";
+
+                }
+
+
+                if (
+                    erro.code ===
+                    "auth/invalid-email"
+                ) {
+
+                    mensagem =
+                        "❌ E-mail inválido.";
+
+                }
+
+
+                mostrarMensagem(
+                    mensagem
+                );
+
+            }
+
+
+            btnLogin.disabled =
+                false;
+
+
+            btnLogin.textContent =
+                "🔐 Entrar";
+
+        }
+    );
+
+
+
+    // =================================================
+    // CRIAR CONTA
+    // =================================================
+
+    btnCadastro.addEventListener(
+        "click",
+        async () => {
+
+            const email =
+                document.getElementById(
+                    "emailCadastro"
+                ).value.trim();
+
+
+            const senha =
+                document.getElementById(
+                    "senhaCadastro"
+                ).value;
+
+
+            const confirmar =
+                document.getElementById(
+                    "senhaCadastroConfirmar"
+                ).value;
+
+
+            if (!email || !senha || !confirmar) {
+
+                mostrarMensagem(
+                    "Preencha todos os campos."
+                );
+
+                return;
+            }
+
+
+            if (senha !== confirmar) {
+
+                mostrarMensagem(
+                    "❌ As senhas não são iguais."
+                );
+
+                return;
+            }
+
+
+            if (senha.length < 6) {
+
+                mostrarMensagem(
+                    "❌ A senha precisa ter pelo menos 6 caracteres."
+                );
+
+                return;
+            }
+
+
+            btnCadastro.disabled =
+                true;
+
+
+            btnCadastro.textContent =
+                "Criando conta...";
+
+
+            try {
+
+                await createUserWithEmailAndPassword(
+                    loginAuth,
+                    email,
+                    senha
+                );
+
+
+                mostrarMensagem(
+                    "✅ Conta criada com sucesso!",
+                    false
+                );
+
+
+                document.getElementById(
+                    "emailCadastro"
+                ).value = "";
+
+
+                document.getElementById(
+                    "senhaCadastro"
+                ).value = "";
+
+
+                document.getElementById(
+                    "senhaCadastroConfirmar"
+                ).value = "";
+
+
+                // Voltar para login
+
+                setTimeout(
+                    () => {
+
+                        areaCadastro.style.display =
+                            "none";
+
+
+                        areaLogin.style.display =
+                            "block";
+
+                    },
+                    1000
+                );
+
+            }
+
+            catch (erro) {
+
+                console.error(
+                    erro
+                );
+
+
+                let mensagem =
+                    "❌ Não foi possível criar a conta.";
+
+
+                if (
+                    erro.code ===
+                    "auth/email-already-in-use"
+                ) {
+
+                    mensagem =
+                        "❌ Este e-mail já possui uma conta.";
+
+                }
+
+
+                if (
+                    erro.code ===
+                    "auth/invalid-email"
+                ) {
+
+                    mensagem =
+                        "❌ E-mail inválido.";
+
+                }
+
+
+                if (
+                    erro.code ===
+                    "auth/weak-password"
+                ) {
+
+                    mensagem =
+                        "❌ A senha é muito fraca.";
+
+                }
+
+
+                mostrarMensagem(
+                    mensagem
+                );
+
+            }
+
+
+            btnCadastro.disabled =
+                false;
+
+
+            btnCadastro.textContent =
+                "✅ Criar conta";
+
+        }
+    );
+
+
+
+    // =================================================
+    // VERIFICAR LOGIN
+    // =================================================
+
+    onAuthStateChanged(
+        loginAuth,
+        (user) => {
+
+            if (user) {
+
+                // =====================================
+                // USUÁRIO LOGADO
+                // =====================================
+
+                telaLogin.style.display =
+                    "none";
+
+
+                app.style.display =
+                    "block";
+
+
+                usuarioLogado.innerHTML =
+                    `
+                    👤 Logado como:
+                    <strong>
+                        ${user.email}
+                    </strong>
+                    `;
+
+
+                console.log(
+                    "Usuário autenticado:",
+                    user.email
+                );
+
+
+                console.log(
+                    "UID:",
+                    user.uid
+                );
+
+            }
+
+            else {
+
+                // =====================================
+                // NÃO LOGADO
+                // =====================================
+
+                telaLogin.style.display =
+                    "flex";
+
+
+                app.style.display =
+                    "none";
+
+
+                usuarioLogado.innerHTML =
+                    "👤 Não conectado";
+
+            }
+
+        }
+    );
 
 </script>
 
+
+
+<!-- =====================================================
+     SCRIPT PRINCIPAL DO APP
+===================================================== -->
+
+<script
+    type="module"
+    src="script.js"
+></script>
+
+
 </body>
+
 </html>
